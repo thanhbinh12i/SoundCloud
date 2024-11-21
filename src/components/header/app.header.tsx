@@ -13,6 +13,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 
 //styled-component
@@ -56,6 +58,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+      const router = useRouter();
       const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
       const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
             React.useState<null | HTMLElement>(null);
@@ -79,7 +82,6 @@ export default function AppHeader() {
       const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
             setMobileMoreAnchorEl(event.currentTarget);
       };
-
       const menuId = 'primary-search-account-menu';
       const renderMenu = (
             <Menu
@@ -91,7 +93,11 @@ export default function AppHeader() {
                   transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                   anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                  <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+                  <MenuItem>
+                        <Link href='/profile' style={{ color: "unset", textDecoration: "unset" }}>
+                              Profile
+                        </Link>
+                  </MenuItem>
                   <MenuItem onClick={handleMenuClose}>My account</MenuItem>
             </Menu>
       );
@@ -113,10 +119,13 @@ export default function AppHeader() {
                   open={isMobileMenuOpen}
                   onClose={handleMobileMenuClose}
             >
-                  <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+                  <MenuItem><Link href='/profile'>Profile</Link></MenuItem>
+                  <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
             </Menu>
       );
+      const handleRedirectHome = () => {
+            router.push('/')
+      }
 
       return (
             <Box sx={{ flexGrow: 1 }}>
@@ -126,12 +135,13 @@ export default function AppHeader() {
                   >
                         <Container>
                               <Toolbar>
-                                    <img src='assest/logo.png' style={{ background: 'linear-gradient(#f70,#f30)', padding: '10px', marginRight: '10px' }} />
+                                    <img onClick={() => handleRedirectHome()} src='assest/logo.png' style={{ background: 'linear-gradient(#f70,#f30)', padding: '10px', marginRight: '10px', cursor: 'pointer' }} />
                                     <Typography
                                           variant="h6"
                                           noWrap
                                           component="div"
-                                          sx={{ display: { xs: 'none', sm: 'block' } }}
+                                          sx={{ display: { xs: 'none', sm: 'block', cursor: 'pointer' } }}
+                                          onClick={() => handleRedirectHome()}
                                     >
                                           Binhdaynee
                                     </Typography>
@@ -149,10 +159,14 @@ export default function AppHeader() {
                                           display: { xs: 'none', md: 'flex' },
                                           gap: "20px",
                                           alignItems: "center",
-                                          cursor: "pointer"
+                                          cursor: "pointer",
+                                          "> a": {
+                                                color: "unset",
+                                                textDecoration: "unset"
+                                          }
                                     }}>
-                                          <span>Playlist</span>
-                                          <span>Likes</span>
+                                          <Link href='/playlist'>Playlist</Link>
+                                          <Link href='/like'>Likes</Link>
                                           <span>Upload</span>
                                           <Avatar alt="Remy Sharp" src='assest/avatar.jpg' onClick={handleProfileMenuOpen} />
                                     </Box>

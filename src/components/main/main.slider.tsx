@@ -9,7 +9,13 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Divider from '@mui/material/Divider';
 
-const MainSlider = () => {
+interface IProps {
+      data: ITrackTop[];
+      title: string;
+}
+
+const MainSlider = (props: IProps) => {
+      const { data, title } = props;
       const NextArrow = (props: any) => {
             return (
                   <Button variant="outlined"
@@ -17,7 +23,7 @@ const MainSlider = () => {
                         sx={{
                               position: "absolute",
                               right: 0,
-                              top: "50%",
+                              top: "30%",
                               zIndex: 2,
                               minWidth: 30,
                               width: 35,
@@ -33,7 +39,7 @@ const MainSlider = () => {
                   <Button variant="outlined" onClick={props.onClick}
                         sx={{
                               position: "absolute",
-                              top: "50%",
+                              top: "30%",
                               zIndex: 2,
                               minWidth: 30,
                               width: 35,
@@ -70,36 +76,21 @@ const MainSlider = () => {
                         }
                   }}
             >
-                  <h2> Multiple tracks </h2>
+                  <h2> {title} </h2>
 
                   <Slider {...settings}>
-                        <div className="abc">
-                              <img src="assest/avatar.jpg" />
-                        </div>
-                        <div className="abc">
-                              <img src="assest/avatar.jpg" />
-                        </div>
-                        <div className="abc">
-                              <img src="assest/avatar.jpg" />
-                        </div>
-                        <div className="abc">
-                              <img src="assest/avatar.jpg" />
-                        </div>
-                        <div className="abc">
-                              <img src="assest/avatar.jpg" />
-                        </div>
-                        <div className="abc">
-                              <img src="assest/avatar.jpg" />
-                        </div>
-                        <div className="abc">
-                              <img src="assest/avatar.jpg" />
-                        </div>
-                        <div className="abc">
-                              <img src="assest/avatar.jpg" />
-                        </div>
-                        <div className="abc">
-                              <img src="assest/avatar.jpg" />
-                        </div>
+                        {data && Array.isArray(data) ? (
+                              data.map(track => {
+                                    return (
+                                          <div className="track" key={track.id}>
+                                                <img src={track.imgUrl} alt={track.title} />
+                                                <p>{track.title}</p>
+                                          </div>
+                                    );
+                              })
+                        ) : (
+                              <p>No tracks available.</p>
+                        )}
                   </Slider>
                   <Divider />
             </Box>
