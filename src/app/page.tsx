@@ -4,9 +4,9 @@ import MainSlider from "@/components/main/main.slider";
 import { get } from "@/utils/request";
 
 const HomePage = () => {
-  const [chills, setChills] = useState([]);
-  const [sads, setSads] = useState([]);
-  const [genZs, setGenZs] = useState([]);
+  const [chills, setChills] = useState<any[]>([]);
+  const [sads, setSads] = useState<any[]>([]);
+  const [genZs, setGenZs] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,9 +14,9 @@ const HomePage = () => {
         const chillsData = await get("tracks?category=Chill");
         const sadsData = await get('tracks?category=Sad');
         const genZsData = await get('tracks?category=GenZ');
-        setChills(chillsData);
-        setSads(sadsData);
-        setGenZs(genZsData);
+        setChills(Array.isArray(chillsData) ? chillsData : []);
+        setSads(Array.isArray(sadsData) ? sadsData : []);
+        setGenZs(Array.isArray(genZsData) ? genZsData : []);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
