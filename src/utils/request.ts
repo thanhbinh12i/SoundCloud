@@ -1,4 +1,4 @@
-const API_DOMAIN = "https://db-soundcloud-binhdaynee.vercel.app/";
+const API_DOMAIN = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
 
 interface Options {
       [key: string]: any;

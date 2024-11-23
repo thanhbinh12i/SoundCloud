@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import MainSlider from "@/components/main/main.slider";
 import { get } from "@/utils/request";
+import { Container } from '@mui/material';
 
 const HomePage = () => {
   const [chills, setChills] = useState<any[]>([]);
@@ -30,18 +31,20 @@ const HomePage = () => {
 
   return (
     <>
-      <MainSlider
-        title={"Top Chill"}
-        data={chills ?? []}
-      />
-      <MainSlider
-        title={"Top Nhạc Buồn"}
-        data={sads ?? []}
-      />
-      <MainSlider
-        title={"Top Nhạc GenZ"}
-        data={genZs ?? []}
-      />
+      <Container>
+        <MainSlider
+          title={"Top Nhạc Hot"}
+          data={genZs ?? []}
+        />
+        <MainSlider
+          title={"Top Chill"}
+          data={chills ?? []}
+        />
+        <MainSlider
+          title={"Top Nhạc Buồn"}
+          data={sads ?? []}
+        />
+      </Container>
     </>
   );
 };

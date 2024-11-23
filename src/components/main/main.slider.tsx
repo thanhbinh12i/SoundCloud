@@ -8,6 +8,7 @@ import Button from "@mui/material/Button/Button";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Divider from '@mui/material/Divider';
+import Link from "next/link";
 
 interface IProps {
       data: ITrackTop[];
@@ -18,11 +19,11 @@ const MainSlider = (props: IProps) => {
       const { data, title } = props;
       const NextArrow = (props: any) => {
             return (
-                  <Button variant="outlined"
+                  <Button color="inherit" variant="contained"
                         onClick={props.onClick}
                         sx={{
                               position: "absolute",
-                              right: 0,
+                              right: 25,
                               top: "30%",
                               zIndex: 2,
                               minWidth: 30,
@@ -36,7 +37,7 @@ const MainSlider = (props: IProps) => {
 
       const PrevArrow = (props: any) => {
             return (
-                  <Button variant="outlined" onClick={props.onClick}
+                  <Button color="inherit" variant="contained" onClick={props.onClick}
                         sx={{
                               position: "absolute",
                               top: "30%",
@@ -63,16 +64,23 @@ const MainSlider = (props: IProps) => {
 
             <Box
                   sx={{
-                        margin: "0 40px",
-                        ".abc": {
-                              padding: "0 10px",
+                        margin: "0 45px",
+                        ".track": {
+                              padding: "0 20px",
+
+                              "img": {
+                                    height: 150,
+                                    width: 150
+                              }
                         },
-                        "img": {
-                              marginLeft: '30px',
+                        "h3": {
                               border: "1px solid #ccc",
-                              padding: "10px",
-                              height: "240px",
-                              width: '240px'
+                              padding: "20px",
+                              height: "200px",
+
+                        },
+                        "a": {
+                              textDecoration: "unset"
                         }
                   }}
             >
@@ -81,10 +89,13 @@ const MainSlider = (props: IProps) => {
                   <Slider {...settings}>
                         {data && Array.isArray(data) ? (
                               data.map(track => {
+                                    const trackSearchUrl = track.trackUrl.replace('https://thantrieu.com/resources/music/', '')
                                     return (
                                           <div className="track" key={track.id}>
                                                 <img src={track.imgUrl} alt={track.title} />
-                                                <p>{track.title}</p>
+                                                <Link href={`/track/${track.id}?audio=${trackSearchUrl}`}>
+                                                      <h4>{track.title}</h4>
+                                                </Link>
                                           </div>
                                     );
                               })
