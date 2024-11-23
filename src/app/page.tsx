@@ -11,9 +11,12 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const chillsData = await get("tracks?category=Chill");
-        const sadsData = await get('tracks?category=Sad');
-        const genZsData = await get('tracks?category=GenZ');
+        const [chillsData, sadsData, genZsData] = await Promise.all([
+          get("tracks?category=Chill"),
+          get("tracks?category=Sad"),
+          get("tracks?category=GenZ")
+        ]);
+
         setChills(Array.isArray(chillsData) ? chillsData : []);
         setSads(Array.isArray(sadsData) ? sadsData : []);
         setGenZs(Array.isArray(genZsData) ? genZsData : []);

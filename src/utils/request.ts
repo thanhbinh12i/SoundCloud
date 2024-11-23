@@ -1,4 +1,4 @@
-const API_DOMAIN = "https://db-soundcloud.vercel.app/";
+const API_DOMAIN = "https://db-soundcloud-binhdaynee.vercel.app/";
 
 interface Options {
       [key: string]: any;
