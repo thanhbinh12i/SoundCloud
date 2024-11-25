@@ -6,6 +6,7 @@ import { WaveSurferOptions } from "wavesurfer.js";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import './wave.track.scss';
+import { Tooltip } from '@mui/material';
 
 const WaveTrack = () => {
       const searchParams = useSearchParams()
@@ -69,6 +70,9 @@ const WaveTrack = () => {
                   wavesurfer.on('timeupdate', (currentTime) => {
                         setTime(formatTime(currentTime));
                   }),
+                  wavesurfer.once('interaction', () => {
+                        wavesurfer.play()
+                  })
             ]
 
             return () => {
@@ -89,7 +93,35 @@ const WaveTrack = () => {
             const paddedSeconds = `0${secondsRemainder}`.slice(-2)
             return `${minutes}:${paddedSeconds}`
       }
+      const arrComments = [
+            {
+                  id: 1,
+                  avatar: "assest/avatar.jpg",
+                  moment: 10,
+                  user: "Thanh Bình",
+                  content: "Great!!!"
+            },
+            {
+                  id: 2,
+                  avatar: "assest/avatar.jpg",
+                  moment: 30,
+                  user: "Binhdaynee",
+                  content: "Very Good!!!"
+            },
+            {
+                  id: 3,
+                  avatar: "assest/avatar.jpg",
+                  moment: 50,
+                  user: "Bình đẹp trai",
+                  content: "Hihihiiii!!!"
+            },
+      ]
 
+      const calLeft = (moment: number) => {
+            const hardCodeDuration = 199;
+            const percent = (moment / hardCodeDuration) * 100;
+            return `${percent}%`
+      }
       return (
             <div style={{ marginTop: 20 }}>
                   <div
@@ -169,6 +201,29 @@ const WaveTrack = () => {
                                           }}
                                     >
 
+                                    </div>
+                                    <div className="comments"
+                                          style={{ position: "relative" }}
+                                    >
+                                          {
+                                                arrComments.map(item => {
+                                                      return (
+                                                            <Tooltip title={item.content} arrow>
+                                                                  <img
+                                                                        key={item.id}
+                                                                        style={{
+                                                                              height: 20, width: 20,
+                                                                              position: "absolute",
+                                                                              top: 100,
+                                                                              zIndex: 20,
+                                                                              left: calLeft(item.moment)
+                                                                        }}
+                                                                        src="assest/avatar.jpg"
+                                                                  />
+                                                            </Tooltip>
+                                                      )
+                                                })
+                                          }
                                     </div>
 
                               </div>
