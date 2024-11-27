@@ -15,6 +15,7 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 
 //styled-component
@@ -58,6 +59,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+      const { data: session } = useSession()
       const router = useRouter();
       const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
       const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -155,21 +157,32 @@ export default function AppHeader() {
                                           />
                                     </Search>
                                     <Box sx={{ flexGrow: 1 }} />
-                                    <Box sx={{
-                                          display: { xs: 'none', md: 'flex' },
-                                          gap: "20px",
-                                          alignItems: "center",
-                                          cursor: "pointer",
-                                          "> a": {
-                                                color: "unset",
-                                                textDecoration: "unset"
-                                          }
-                                    }}>
-                                          <Link href='/playlist'>Playlist</Link>
-                                          <Link href='/like'>Likes</Link>
-                                          <span>Upload</span>
-                                          <Avatar alt="Remy Sharp" src='assest/avatar.jpg' onClick={handleProfileMenuOpen} />
-                                    </Box>
+                                    {
+                                          session ?
+                                                <>
+                                                      <Box sx={{
+                                                            display: { xs: 'none', md: 'flex' },
+                                                            gap: "20px",
+                                                            alignItems: "center",
+                                                            cursor: "pointer",
+                                                            "> a": {
+                                                                  color: "unset",
+                                                                  textDecoration: "unset"
+                                                            }
+                                                      }}>
+                                                            <Link href='/playlist'>Playlist</Link>
+                                                            <Link href='/like'>Likes</Link>
+                                                            <span>Upload</span>
+                                                            <Avatar alt="Remy Sharp" src='assest/avatar.jpg' onClick={handleProfileMenuOpen} />
+                                                      </Box>
+                                                </>
+                                                :
+                                                <>
+                                                      <Link href='/api/auth/signin'>Login</Link>
+                                                </>
+                                    }
+
+
                                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                                           <IconButton
                                                 size="large"

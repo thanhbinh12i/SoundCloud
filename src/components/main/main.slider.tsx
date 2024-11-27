@@ -64,7 +64,7 @@ const MainSlider = (props: IProps) => {
 
             <Box
                   sx={{
-                        margin: "0 45px",
+                        margin: "50px 45px",
                         ".track": {
                               padding: "0 20px",
 
@@ -89,7 +89,7 @@ const MainSlider = (props: IProps) => {
                   <Slider {...settings}>
                         {data && Array.isArray(data) ? (
                               data.map(track => {
-                                    const trackSearchUrl = track.trackUrl.replace('https://thantrieu.com/resources/music/', '')
+                                    const trackSearchUrl = track?.trackUrl.replace('https://thantrieu.com/resources/music/', '')
                                     return (
                                           <div className="track" key={track.id}>
                                                 <img src={track.imgUrl} alt={track.title} />

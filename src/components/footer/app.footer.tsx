@@ -15,7 +15,7 @@ const AppFooter = () => {
                   <AppBar position="fixed"
                         sx={{
                               top: 'auto', bottom: 0,
-                              background: "#f2f2f2"
+                              background: "#f2f2f2",
                         }}
                   >
                         <Container sx={{ display: "flex", gap: 10 }}>
