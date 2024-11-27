@@ -181,8 +181,6 @@ export default function AppHeader() {
                                                       <Link href='/api/auth/signin'>Login</Link>
                                                 </>
                                     }
-
-
                                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                                           <IconButton
                                                 size="large"
