@@ -64,7 +64,7 @@ const MainSlider = (props: IProps) => {
 
             <Box
                   sx={{
-                        margin: "50px 45px",
+                        margin: "10px 45px",
                         ".track": {
                               padding: "0 20px",
 

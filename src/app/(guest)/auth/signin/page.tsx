@@ -1,9 +1,10 @@
 import AuthSignIn from "@/components/auth/auth.signin";
 
-export default function SignInPage() {
+const SignInPage = () => {
       return (
             <>
                   <AuthSignIn />
             </>
       )
 }
+export default SignInPage
