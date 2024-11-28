@@ -15,7 +15,7 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 
 //styled-component
@@ -100,7 +100,12 @@ export default function AppHeader() {
                               Profile
                         </Link>
                   </MenuItem>
-                  <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+                  <MenuItem onClick={() => {
+                        handleMenuClose();
+                        signOut()
+                  }}>
+                        Log out
+                  </MenuItem>
             </Menu>
       );
 
@@ -178,7 +183,16 @@ export default function AppHeader() {
                                                 </>
                                                 :
                                                 <>
-                                                      <Link href='/api/auth/signin'>Login</Link>
+                                                      <Box sx={{
+                                                            alignItems: "center",
+                                                            cursor: "pointer",
+                                                            "> a": {
+                                                                  color: "unset",
+                                                                  textDecoration: "unset"
+                                                            }
+                                                      }}>
+                                                            <Link href={'#'} onClick={() => signIn()}>Login</Link>
+                                                      </Box>
                                                 </>
                                     }
                                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
