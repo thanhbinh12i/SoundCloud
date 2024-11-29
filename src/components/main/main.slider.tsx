@@ -77,7 +77,6 @@ const MainSlider = (props: IProps) => {
                               border: "1px solid #ccc",
                               padding: "20px",
                               height: "200px",
-
                         },
                         "a": {
                               textDecoration: "unset"

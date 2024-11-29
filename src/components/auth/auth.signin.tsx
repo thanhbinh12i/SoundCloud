@@ -1,5 +1,5 @@
 'use client'
-import { Avatar, Box, Button, Divider, Grid, TextField, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Button, Divider, Grid, Snackbar, TextField, Typography } from "@mui/material";
 import LockIcon from '@mui/icons-material/Lock';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -7,11 +7,15 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import { useState } from "react";
+import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const AuthSignIn = (props: any) => {
-
+      const router = useRouter()
       const [showPassword, setShowPassword] = useState<boolean>(false);
       const [username, setUsername] = useState<string>("");
       const [password, setPassword] = useState<string>("");
@@ -22,8 +26,11 @@ const AuthSignIn = (props: any) => {
       const [errorUsername, setErrorUsername] = useState<string>("");
       const [errorPassword, setErrorPassword] = useState<string>("");
 
+      const [openMessage, setOpenMessage] = useState<boolean>(false)
+      const [resMessage, setResMessage] = useState<string>("")
 
-      const handleSubmit = () => {
+
+      const handleSubmit = async () => {
             setIsErrorUsername(false);
             setIsErrorPassword(false);
             setErrorUsername("");
@@ -39,17 +46,21 @@ const AuthSignIn = (props: any) => {
                   setErrorPassword("Password is not empty.")
                   return;
             }
-            console.log(">>> check username: ", username, ' pass: ', password)
+            const response = await signIn('credentials', {
+                  username: username,
+                  password: password,
+                  redirect: false
+            })
+            if (!response?.error) {
+                  router.push('/')
+            } else {
+                  setOpenMessage(true)
+                  setResMessage("Tài khoản hoặc mật khẩu không hợp lệ")
+            }
       }
 
       return (
-            <Box
-                  sx={{
-                        // backgroundImage: "linear-gradient(to bottom, #ff9aef, #fedac1, #d5e1cf, #b7e6d9)",
-                        // backgroundColor: "#b7e6d9",
-                        // backgroundRepeat: "no-repeat"
-                  }}
-            >
+            <Box>
                   <Grid container
                         sx={{
                               display: "flex",
@@ -58,17 +69,15 @@ const AuthSignIn = (props: any) => {
                               height: "100vh"
                         }}
                   >
-                        <Grid
-                              item
-                              xs={12}
-                              sm={8}
-                              md={5}
-                              lg={4}
+                        <Grid item xs={12} sm={8} md={5} lg={4}
                               sx={{
                                     boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
                               }}
                         >
                               <div style={{ margin: "20px" }}>
+                                    <Link href="/">
+                                          <ArrowBackIcon />
+                                    </Link>
                                     <Box sx={{
                                           display: "flex",
                                           justifyContent: "center",
@@ -100,6 +109,11 @@ const AuthSignIn = (props: any) => {
                                     />
                                     <TextField
                                           onChange={(event) => setPassword(event.target.value)}
+                                          onKeyDown={(e) => {
+                                                if (e.key === "Enter") {
+                                                      handleSubmit()
+                                                }
+                                          }}
                                           variant="outlined"
                                           margin="normal"
                                           required
@@ -144,6 +158,7 @@ const AuthSignIn = (props: any) => {
                                                       cursor: "pointer",
                                                       bgcolor: "orange"
                                                 }}
+                                                onClick={() => signIn('github')}
                                           >
                                                 <GitHubIcon titleAccess="Login with Github" />
                                           </Avatar>
@@ -160,7 +175,16 @@ const AuthSignIn = (props: any) => {
                               </div>
                         </Grid>
                   </Grid>
-
+                  <Snackbar open={openMessage} autoHideDuration={6000} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                        <Alert
+                              onClose={() => setOpenMessage(false)}
+                              severity="error"
+                              variant="filled"
+                              sx={{ width: '100%' }}
+                        >
+                              {resMessage}
+                        </Alert>
+                  </Snackbar>
             </Box>
 
       )
