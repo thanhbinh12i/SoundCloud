@@ -19,8 +19,16 @@ const AppFooter = () => {
                               background: "#f2f2f2",
                         }}
                   >
-                        <Container sx={{ display: "flex", gap: 10 }}>
+                        <Container sx={{
+                              display: "flex", gap: 10,
+
+                              ".rhap_main": {
+                                    gap: "30px"
+                              }
+
+                        }}>
                               <AudioPlayer
+                                    layout='horizontal-reverse'
                                     src="https://thantrieu.com/resources/music/1121430003.mp3"
                                     volume={0.5}
                                     style={{
