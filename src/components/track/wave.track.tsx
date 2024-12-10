@@ -135,10 +135,10 @@ const WaveTrack = (props: IProps) => {
             }
       }, [currentTrack])
 
-      // useEffect(() => {
-      //       if (track?.id && !currentTrack?.id)
-      //             setCurrentTrack({ ...track, isPlaying: false })
-      // }, [track])
+      useEffect(() => {
+            if (track?.id && !currentTrack?.id)
+                  setCurrentTrack({ ...track, isPlaying: false })
+      }, [track])
 
       return (
             <div style={{ marginTop: 20 }}>
@@ -265,6 +265,7 @@ const WaveTrack = (props: IProps) => {
                                     width: 250,
                                     height: 250
                               }}>
+                                    <img style={{ width: '100%', height: 250 }} alt='' src={track?.imgUrl} />
                               </div>
                         </div>
                   </div>

@@ -26,51 +26,57 @@ const AppFooter = () => {
       if (!hasMounted) return (<></>)
 
       return (
-            <div>
-                  <AppBar position="fixed"
-                        sx={{
+            <>
+                  {
+                        currentTrack.id && (
+                              <div>
+                                    <AppBar position="fixed"
+                                          sx={{
 
-                              top: 'auto', bottom: 0,
-                              background: "#f2f2f2",
-                        }}
-                  >
-                        <Container sx={{
-                              display: "flex", gap: 10,
+                                                top: 'auto', bottom: 0,
+                                                background: "#f2f2f2",
+                                          }}
+                                    >
+                                          <Container sx={{
+                                                display: "flex", gap: 10,
 
-                              ".rhap_main": {
-                                    gap: "30px"
-                              }
+                                                ".rhap_main": {
+                                                      gap: "30px"
+                                                }
 
-                        }}>
-                              <AudioPlayer
-                                    ref={playerRef}
-                                    layout='horizontal-reverse'
-                                    src={currentTrack.trackUrl}
-                                    volume={0.5}
-                                    style={{
-                                          boxShadow: "unset",
-                                          background: "#f2f2f2"
-                                    }}
-                                    onPlay={() => {
-                                          setCurrentTrack({ ...currentTrack, isPlaying: true })
-                                    }}
-                                    onPause={() => {
-                                          setCurrentTrack({ ...currentTrack, isPlaying: false })
-                                    }}
-                              />
-                              <div style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    alignItems: "start",
-                                    justifyContent: "center",
-                                    minWidth: 100
-                              }}>
-                                    <div style={{ color: "#333" }}>{currentTrack.description}</div>
-                                    <div style={{ color: "black" }}>{currentTrack.title}</div>
+                                          }}>
+                                                <AudioPlayer
+                                                      ref={playerRef}
+                                                      layout='horizontal-reverse'
+                                                      src={currentTrack.trackUrl}
+                                                      volume={0.5}
+                                                      style={{
+                                                            boxShadow: "unset",
+                                                            background: "#f2f2f2"
+                                                      }}
+                                                      onPlay={() => {
+                                                            setCurrentTrack({ ...currentTrack, isPlaying: true })
+                                                      }}
+                                                      onPause={() => {
+                                                            setCurrentTrack({ ...currentTrack, isPlaying: false })
+                                                      }}
+                                                />
+                                                <div style={{
+                                                      display: "flex",
+                                                      flexDirection: "column",
+                                                      alignItems: "start",
+                                                      justifyContent: "center",
+                                                      minWidth: 100
+                                                }}>
+                                                      <div style={{ color: "#333" }}>{currentTrack.description}</div>
+                                                      <div style={{ color: "black" }}>{currentTrack.title}</div>
+                                                </div>
+                                          </Container>
+                                    </AppBar>
                               </div>
-                        </Container>
-                  </AppBar>
-            </div>
+                        )
+                  }
+            </>
       )
 }
 
