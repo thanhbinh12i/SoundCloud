@@ -4,13 +4,14 @@ interface Options {
       [key: string]: any;
 }
 
-interface ResponseData {
-      [key: string]: any;
+interface ResponseData<T = any> {
+      data?: T;
+      error?: string;
 }
 
-export const get = async (path: string): Promise<ResponseData> => {
+export const get = async <T>(path: string): Promise<T> => {
       const response = await fetch(API_DOMAIN + path);
-      const result: ResponseData = await response.json();
+      const result = await response.json();
       return result;
 }
 

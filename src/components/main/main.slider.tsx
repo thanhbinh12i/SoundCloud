@@ -92,7 +92,7 @@ const MainSlider = (props: IProps) => {
                                     return (
                                           <div className="track" key={track.id}>
                                                 <img src={track.imgUrl} alt={track.title} />
-                                                <Link href={`/track/${track.id}?audio=${trackSearchUrl}`}>
+                                                <Link href={`/track/${track.id}?audio=${trackSearchUrl}&id=${track.id}`}>
                                                       <h4>{track.title}</h4>
                                                 </Link>
                                           </div>

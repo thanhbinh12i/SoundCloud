@@ -7,15 +7,21 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import './wave.track.scss';
 import { Tooltip } from '@mui/material';
+import { useTrackContext } from '@/lib/track.wrapper';
 
-const WaveTrack = () => {
+interface IProps {
+      track: ITrackTop | null;
+}
+
+const WaveTrack = (props: IProps) => {
+      const { track } = props;
       const searchParams = useSearchParams()
       const fileName = searchParams.get('audio');
-      const containerRef = useRef<HTMLDivElement>(null)
-      const hoverRef = useRef<HTMLDivElement>(null)
-
+      const containerRef = useRef<HTMLDivElement>(null);
+      const hoverRef = useRef<HTMLDivElement>(null);
       const [time, setTime] = useState<string>("0:00");
       const [duration, setDuration] = useState<string>("0:00");
+      const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
 
       const optionsMemo = useMemo((): Omit<WaveSurferOptions, 'container'> => {
             let gradient, progressGradient;
@@ -47,18 +53,17 @@ const WaveTrack = () => {
                   barWidth: 2,
                   url: `/api?audio=${fileName}`
             }
-      }, [])
-
-      const wavesurfer = useWavesurfer(containerRef, optionsMemo)
-      const [isPlaying, setIsPlaying] = useState(false)
+      }, []);
+      const wavesurfer = useWavesurfer(containerRef, optionsMemo);
+      const [isPlaying, setIsPlaying] = useState<boolean>(false);
+      // Initialize wavesurfer when the container mounts
+      // or any of the props change
       useEffect(() => {
-            if (!wavesurfer) return
-            setIsPlaying(false)
-            const timeEl = document.querySelector('#time')!
-            const durationEl = document.querySelector('#duration')!
+            if (!wavesurfer) return;
+            setIsPlaying(false);
 
-            const hover = hoverRef.current!
-            const waveform = containerRef.current!
+            const hover = hoverRef.current!;
+            const waveform = containerRef.current!;
             waveform.addEventListener('pointermove', (e) => (hover.style.width = `${e.offsetX}px`))
 
             const subscriptions = [
@@ -79,13 +84,13 @@ const WaveTrack = () => {
                   subscriptions.forEach((unsub) => unsub())
             }
       }, [wavesurfer])
+
+      // On play button click
       const onPlayClick = useCallback(() => {
             if (wavesurfer) {
-                  wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play()
-                  setIsPlaying(wavesurfer.isPlaying())
+                  wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
             }
-
-      }, [wavesurfer])
+      }, [wavesurfer]);
 
       const formatTime = (seconds: number) => {
             const minutes = Math.floor(seconds / 60)
@@ -93,6 +98,7 @@ const WaveTrack = () => {
             const paddedSeconds = `0${secondsRemainder}`.slice(-2)
             return `${minutes}:${paddedSeconds}`
       }
+
       const arrComments = [
             {
                   id: 1,
@@ -122,6 +128,18 @@ const WaveTrack = () => {
             const percent = (moment / hardCodeDuration) * 100;
             return `${percent}%`
       }
+
+      useEffect(() => {
+            if (wavesurfer && currentTrack.isPlaying) {
+                  wavesurfer.pause();
+            }
+      }, [currentTrack])
+
+      // useEffect(() => {
+      //       if (track?.id && !currentTrack?.id)
+      //             setCurrentTrack({ ...track, isPlaying: false })
+      // }, [track])
+
       return (
             <div style={{ marginTop: 20 }}>
                   <div
@@ -145,7 +163,13 @@ const WaveTrack = () => {
                               <div className="info" style={{ display: "flex" }}>
                                     <div>
                                           <div
-                                                onClick={() => onPlayClick()}
+                                                onClick={() => {
+                                                      onPlayClick();
+                                                      if (track && wavesurfer) {
+                                                            setCurrentTrack({ ...currentTrack, isPlaying: false })
+                                                      }
+
+                                                }}
                                                 style={{
                                                       borderRadius: "50%",
                                                       background: "#f50",
@@ -172,7 +196,7 @@ const WaveTrack = () => {
                                                 width: "fit-content",
                                                 color: "white"
                                           }}>
-                                                Binhdaynee's song
+                                                {track?.title}
                                           </div>
                                           <div style={{
                                                 padding: "0 5px",
@@ -183,7 +207,7 @@ const WaveTrack = () => {
                                                 color: "white"
                                           }}
                                           >
-                                                Binhdaynee
+                                                {track?.description}
                                           </div>
                                     </div>
                               </div>
@@ -218,7 +242,7 @@ const WaveTrack = () => {
                                                                               zIndex: 20,
                                                                               left: calLeft(item.moment)
                                                                         }}
-                                                                        src="assest/avatar.jpg"
+                                                                        src={track?.imgUrl}
                                                                   />
                                                             </Tooltip>
                                                       )
