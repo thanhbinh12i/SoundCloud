@@ -191,7 +191,7 @@ export default function AppHeader() {
                                                                   textDecoration: "unset"
                                                             }
                                                       }}>
-                                                            <Link href={'auth/signin'} >Login</Link>
+                                                            <Link href={'/auth/signin'} >Login</Link>
                                                       </Box>
                                                 </>
                                     }

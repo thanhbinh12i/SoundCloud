@@ -3,6 +3,17 @@ import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials";
 import type { AuthOptions } from "next-auth"
 import { get } from "@/utils/request";
+interface User {
+      id: string;
+      username: string;
+      email: string;
+      name: string;
+      avatar: string;
+      address: string;
+      password: string;
+      isVerify: boolean;
+      code: string;
+}
 export const authOptions: AuthOptions = {
       secret: process.env.NEXTAUTH_SECRET,
       providers: [
@@ -23,9 +34,9 @@ export const authOptions: AuthOptions = {
                         const password = credentials?.password
                         const res = await get(`users?username=${username}&password=${password}`)
 
-                        if (res.length > 0) {
-                              // Any object returned will be saved in `user` property of the JWT
-                              return res as any
+                        if (res && Array.isArray(res) && res.length > 0) {
+                              const user = res[0] as User
+                              return user
                         } else {
                               // If you return null then an error will be displayed advising the user to check their details.
                               throw new Error("Tài khoản hoặc mật khẩu không hợp lệ")
@@ -42,18 +53,23 @@ export const authOptions: AuthOptions = {
       callbacks: {
             async jwt({ token, user, account, profile, trigger }) {
                   if (trigger === "signIn" && account?.provider !== 'credentials') {
-
-                        token.address = "thanh binh"
+                        if (user) {
+                              token.id = user.id
+                        }
                   }
                   if (trigger === "signIn" && account?.provider === 'credentials') {
-                        // token.access_token = user.access_token
-                        // token.refresh_token = user.refresh_token
-                        // token.user = user.user
+                        return {
+                              ...token,
+                              _id: user.id
+                        }
                   }
                   return token
             },
             session({ session, user, token }) {
-                  // session.user.address = token.address
+                  session.user = {
+                        ...session.user,
+                        _id: token._id as string,
+                  }
                   return session
             },
       },
