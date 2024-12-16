@@ -1,4 +1,5 @@
-const API_DOMAIN = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
+// const API_DOMAIN = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
+const API_DOMAIN = `http://localhost:3002/`;
 
 interface Options {
       [key: string]: any;
@@ -15,7 +16,7 @@ export const get = async <T>(path: string): Promise<T> => {
       return result;
 }
 
-export const post = async (path: string, options: Options): Promise<ResponseData> => {
+export const post = async <T>(path: string, options: Options): Promise<T> => {
       const response = await fetch(API_DOMAIN + path, {
             method: "POST",
             headers: {
@@ -24,7 +25,7 @@ export const post = async (path: string, options: Options): Promise<ResponseData
             },
             body: JSON.stringify(options),
       });
-      const result: ResponseData = await response.json();
+      const result = await response.json();
       return result;
 }
 

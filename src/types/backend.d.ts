@@ -13,6 +13,14 @@ declare global {
             "category": string;
       }
 
+      interface ITrackComment {
+            "id": string,
+            "content": string,
+            "moment": string,
+            "user": string,
+            "track": string
+      }
+
       interface IRequest {
             url: string;
             method: string;

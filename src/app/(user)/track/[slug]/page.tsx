@@ -5,10 +5,11 @@ import { Container } from '@mui/material'
 const DetailTrackPage = async (props: any) => {
       const { params } = props;
       const data = await get<ITrackTop[]>(`tracks?id=${params.slug}`)
+      const comments = await get<ITrackComment[]>(`comments?track=${params.slug}&limit=10`)
       return (
             <>
                   <Container>
-                        <WaveTrack track={data[0]} />
+                        <WaveTrack track={data[0]} comments={comments} />
                   </Container>
             </>
       )
