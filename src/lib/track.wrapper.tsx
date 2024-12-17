@@ -13,6 +13,7 @@ export const TrackContextProvider = ({ children }: { children: React.ReactNode }
             "uploader": "",
             "trackUrl": "",
             "countLike": 0,
+            "countPlay": 0,
             "category": "",
             isPlaying: false
       }
