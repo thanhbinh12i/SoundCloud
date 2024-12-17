@@ -37,7 +37,7 @@ export const del = async (path: string, id: string | number): Promise<ResponseDa
       return result;
 }
 
-export const patch = async (path: string, options: Options): Promise<ResponseData> => {
+export const patch = async <T>(path: string, options: Options): Promise<T> => {
       const response = await fetch(API_DOMAIN + path, {
             method: "PATCH",
             headers: {
@@ -46,6 +46,6 @@ export const patch = async (path: string, options: Options): Promise<ResponseDat
             },
             body: JSON.stringify(options),
       });
-      const result: ResponseData = await response.json();
+      const result = await response.json();
       return result;
 }

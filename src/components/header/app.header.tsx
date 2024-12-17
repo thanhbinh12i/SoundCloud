@@ -177,7 +177,6 @@ export default function AppHeader() {
                                                       }}>
                                                             <Link href='/playlist'>Playlist</Link>
                                                             <Link href='/like'>Likes</Link>
-                                                            <span>Upload</span>
                                                             <Avatar alt="Remy Sharp" src='assest/avatar.jpg' onClick={handleProfileMenuOpen} />
                                                       </Box>
                                                 </>

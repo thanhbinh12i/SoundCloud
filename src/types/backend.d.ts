@@ -10,6 +10,7 @@ declare global {
             "uploader": string;
             "trackUrl": string;
             "countLike": number;
+            "countPlay": number;
             "category": string;
       }
 

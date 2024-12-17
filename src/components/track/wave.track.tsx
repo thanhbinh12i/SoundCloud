@@ -1,6 +1,6 @@
 "use client"
 import { useWavesurfer } from '@/utils/customHook'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { WaveSurferOptions } from "wavesurfer.js";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -10,9 +10,10 @@ import { Tooltip } from '@mui/material';
 import { useTrackContext } from '@/lib/track.wrapper';
 import CommentTrack from './comment.track';
 import LikeTrack from './like.track';
+import { patch } from '@/utils/request';
 
 interface IProps {
-      track: ITrackTop | null;
+      track: ITrackTop;
       comments: ITrackComment[]
 }
 
@@ -118,6 +119,18 @@ const WaveTrack = (props: IProps) => {
             if (track?.id && !currentTrack?.id)
                   setCurrentTrack({ ...track, isPlaying: false })
       }, [track])
+      const viewRef = useRef(true)
+      const router = useRouter()
+      const handleCount = async () => {
+            let countPlay = track?.countPlay + 1
+            if (viewRef.current) {
+                  const res = await patch(`tracks/${track?.id}`, {
+                        countPlay: countPlay
+                  });
+                  router.refresh()
+                  viewRef.current = false
+            }
+      }
 
       return (
             <div style={{ marginTop: 20 }}>
@@ -144,6 +157,7 @@ const WaveTrack = (props: IProps) => {
                                           <div
                                                 onClick={() => {
                                                       onPlayClick();
+                                                      handleCount();
                                                       if (track && wavesurfer) {
                                                             setCurrentTrack({ ...currentTrack, isPlaying: false })
                                                       }
