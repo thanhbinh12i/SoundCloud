@@ -60,4 +60,9 @@ declare global {
             currentTrack: IShareTrack;
             setCurrentTrack: (v: IShareTrack) => void;
       }
+      interface ITrackLike {
+            "id": string;
+            "user": string;
+            "track": string;
+      }
 }
